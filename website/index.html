@@ -7,14 +7,18 @@
 <body>
   <script src="wasm/pong.js"></script>
   <script>
-
+        const env = {
+                      memory: new WebAssembly.Memory({ initial: 256, maximum: 256 }),
+                      table: new WebAssembly.Table({ initial: 0, maximum: 0, element: 'anyfunc' }),
+                    
+        };
         // load the WebAssembly module
         fetch('wasm/pong.wasm')
             .then(response => response.arrayBuffer())
-                .then(bytes => WebAssembly.instantiate(bytes, Module))
-                    .then(result => {
+                .then(bytes => WebAssembly.instantiate(bytes,{env}))
+                    .then(module => {
                         setInterval(function() {
-                            Module.ccall('moduleUpdate', null, [], []);
+                            module.instance.exports.moduleUpdate();
                         }, 1000 / 60);
             })
         .catch(console.error);
