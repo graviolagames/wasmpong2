@@ -13,12 +13,13 @@ void consolePrint(const char *format, ...){
   }, buffer);
 }
 
+EMSCRIPTEN_KEEPALIVE
 int main(){
-    consolePrint("%s", "Test");
+    consolePrint("%s", "[DEBUG] Main()");
     return 0;
 }
 
 EMSCRIPTEN_KEEPALIVE
 void moduleUpdate(){
-       
+       consolePrint("%s", "[DEBUG] Test");
 }
